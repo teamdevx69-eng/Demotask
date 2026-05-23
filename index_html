@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Income Bot - User Panel</title>
+    <style>
+        /* বেসিক সিএসএস ডিজাইন */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f7f6; }
+        header { background-color: #2c3e50; color: white; padding: 15px; text-align: center; }
+        .navbar { display: flex; justify-content: center; background-color: #34495e; padding: 10px; flex-wrap: wrap; }
+        .navbar a { color: white; padding: 10px 20px; text-decoration: none; margin: 5px; border-radius: 5px; font-weight: bold; }
+        .navbar a:hover { background-color: #1abc9c; }
+        .container { padding: 20px; max-width: 1200px; margin: auto; }
+        
+        /* স্লাইডার ডিজাইন */
+        .slider { background-color: #e74c3c; color: white; padding: 30px; text-align: center; border-radius: 8px; margin-bottom: 20px; font-size: 20px; font-weight: bold; }
+        
+        /* টাস্ক কার্ড ডিজাইন */
+        .task-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        .task-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+        .task-card h3 { margin-top: 0; color: #2980b9; }
+        .btn-verify { background-color: #27ae60; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        .btn-verify:hover { background-color: #2ecc71; }
+        
+        /* ব্যালেন্স কার্ড */
+        .balance-card { background: #f1c40f; padding: 15px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Micro-Task Platform</h1>
+        <p>কাজ করুন, ভেরিফাই করুন এবং টাকা ইনকাম করুন!</p>
+    </header>
+
+    <!-- নেভিগেশন মেনু -->
+    <div class="navbar">
+        <a href="#home">Home</a>
+        <a href="#earning">Earning (Tasks)</a>
+        <a href="#promote">Promote My Channel</a>
+        <a href="#deposit">Deposit</a>
+        <a href="#withdraw">Withdraw</a>
+        <a href="#profile">Profile (Info)</a>
+    </div>
+
+    <div class="container">
+        <!-- ইউজারের ব্যালেন্স (অ্যাডমিন থেকে নিয়ন্ত্রিত হবে) -->
+        <div class="balance-card">
+            Current Balance: ৳১৫০.০০ | Referral Bonus: ৳২.০০/Invite
+        </div>
+
+        <!-- স্লাইডার (অ্যাডমিন প্যানেল থেকে ছবি ও টেক্সট আসবে) -->
+        <div class="slider">
+            <span id="slider-text">🔥 অফার: আজকে ৫টি ইউটিউব চ্যানেল সাবস্ক্রাইব করলে দ্বিগুণ বোনাস!</span>
+        </div>
+
+        <h2 id="earning">Today's Available Tasks</h2>
+        
+        <!-- টাস্ক সেকশন -->
+        <div class="task-grid">
+            <!-- টাস্ক ১: ইউটিউব সাবস্ক্রাইব -->
+            <div class="task-card">
+                <h3>📺 Subscribe YouTube Channel</h3>
+                <p>Reward: ৳৫.০০</p>
+                <p>শর্ত: আপনার জিমেইল দিয়ে লগইন করে সাবস্ক্রাইব করতে হবে।</p>
+                <button class="btn-verify" onclick="verifyTask('youtube')">Login & Verify</button>
+            </div>
+
+            <!-- টাস্ক ২: টেলিগ্রাম জয়েন -->
+            <div class="task-card">
+                <h3>✈️ Join Telegram Group</h3>
+                <p>Reward: ৳৩.০০</p>
+                <p>শর্ত: টেলিগ্রাম আইডিতে জয়েন করে ভেরিফাই করুন।</p>
+                <button class="btn-verify" onclick="verifyTask('telegram')">Join & Verify</button>
+            </div>
+
+            <!-- টাস্ক ৩: ম্যানুয়াল অ্যাপ্লাই -->
+            <div class="task-card">
+                <h3>📝 Custom Task (Apply)</h3>
+                <p>Reward: ৳১০.০০</p>
+                <p>শর্ত: ওয়েবসাইট ভিজিট করে স্ক্রিনশট আপলোড করুন।</p>
+                <button class="btn-verify" onclick="verifyTask('custom')">Apply Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // বাটনে ক্লিক করলে ভেরিফিকেশন এর ডেমো এলার্ট
+        function verifyTask(type) {
+            if(type === 'youtube') {
+                alert("Google OAuth Login Page এ নিয়ে যাওয়া হবে...");
+                // এখানে ব্যাকএন্ডের API কল হবে
+            } else if(type === 'telegram') {
+                alert("Telegram Bot Verification চেক করা হচ্ছে...");
+            } else {
+                alert("স্ক্রিনশট আপলোড করার ফর্ম ওপেন হবে...");
+            }
+        }
+
+        // স্লাইডারের টেক্সট পরিবর্তনের সিম্পল লজিক
+        const sliderTexts = [
+            "🔥 অফার: আজকে ৫টি ইউটিউব চ্যানেল সাবস্ক্রাইব করলে দ্বিগুণ বোনাস!",
+            "🚀 নতুন ফিচার: এখন টেলিগ্রাম চ্যানেল প্রমোট করতে পারবেন!",
+            "💸 উইথড্রল আপডেট: এখন বিকাশ এবং নগদে পেমেন্ট নেওয়া যাচ্ছে।"
+        ];
+        let index = 0;
+        setInterval(() => {
+            index = (index + 1) % sliderTexts.length;
+            document.getElementById("slider-text").innerText = sliderTexts[index];
+        }, 3000); // প্রতি ৩ সেকেন্ডে স্লাইডার চেঞ্জ হবে
+    </script>
+
+</body>
+</html>
