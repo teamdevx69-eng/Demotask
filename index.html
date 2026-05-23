@@ -3,38 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Income Bot - User Panel</title>
+    <title>Micro-Task Platform - User Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* বেসিক সিএসএস ডিজাইন */
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f7f6; }
-        header { background-color: #2c3e50; color: white; padding: 15px; text-align: center; }
-        .navbar { display: flex; justify-content: center; background-color: #34495e; padding: 10px; flex-wrap: wrap; }
-        .navbar a { color: white; padding: 10px 20px; text-decoration: none; margin: 5px; border-radius: 5px; font-weight: bold; }
-        .navbar a:hover { background-color: #1abc9c; }
-        .container { padding: 20px; max-width: 1200px; margin: auto; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f7f9fc; }
+        header { background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 20px 0; text-align: center; border-radius: 0 0 20px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        header h1 { margin: 0; font-size: 24px; font-weight: 700; }
+        header p { margin: 5px 0 0; font-size: 14px; color: #ecf0f1; }
+        .navbar { display: flex; justify-content: center; background-color: #ecf0f1; padding: 10px; flex-wrap: wrap; border-radius: 10px; margin: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .navbar a { color: #34495e; padding: 10px 15px; text-decoration: none; margin: 5px; border-radius: 5px; font-weight: 600; font-size: 14px; transition: background 0.3s; }
+        .navbar a:hover, .navbar a.active { background-color: #1abc9c; color: white; }
+        .navbar a i { margin-right: 8px; }
+        .container { padding: 0 20px 20px; max-width: 1200px; margin: auto; }
+        .balance-card { background: linear-gradient(135deg, #f1c40f, #f39c12); color: white; padding: 20px; border-radius: 15px; text-align: center; font-size: 18px; font-weight: 700; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .balance-card i { margin-right: 10px; font-size: 20px; }
         
         /* স্লাইডার ডিজাইন */
-        .slider { background-color: #e74c3c; color: white; padding: 30px; text-align: center; border-radius: 8px; margin-bottom: 20px; font-size: 20px; font-weight: bold; }
-        
-        /* টাস্ক কার্ড ডিজাইন */
-        .task-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
-        .task-card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
-        .task-card h3 { margin-top: 0; color: #2980b9; }
-        .btn-verify { background-color: #27ae60; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        .btn-verify:hover { background-color: #2ecc71; }
-        
-        /* ব্যালেন্স কার্ড */
-        .balance-card { background: #f1c40f; padding: 15px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 20px; }
+        .slider-container { position: relative; overflow: hidden; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .slider { display: flex; transition: transform 0.5s ease-in-out; }
+        .slide { min-width: 100%; box-sizing: border-box; color: white; padding: 40px; text-align: center; font-size: 18px; font-weight: 600; border-radius: 15px; }
+        .slide-1 { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .slide-2 { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .slide-3 { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .slider-indicators { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; }
+        .indicator { width: 10px; height: 10px; background-color: rgba(255, 255, 255, 0.5); border-radius: 50%; cursor: pointer; transition: background 0.3s; }
+        .indicator.active { background-color: white; }
+
+        .task-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .task-card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; transition: transform 0.3s; }
+        .task-card:hover { transform: translateY(-5px); }
+        .task-card .icon-area { font-size: 40px; color: #e74c3c; margin-bottom: 15px; }
+        .task-card h3 { margin-top: 0; color: #2c3e50; font-size: 18px; font-weight: 700; }
+        .task-card p.reward { font-size: 20px; color: #2ecc71; font-weight: 700; margin: 10px 0; }
+        .task-card p.reward small { font-size: 14px; color: #7f8c8d; font-weight: 400; }
+        .task-card p.condition { font-size: 14px; color: #7f8c8d; margin-bottom: 20px; }
+        .btn-verify { background-color: #2ecc71; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; transition: background 0.3s; }
+        .btn-verify:hover { background-color: #27ae60; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Micro-Task Platform</h1>
-        <p>কাজ করুন, ভেরিফাই করুন এবং টাকা ইনকাম করুন!</p>
+        <div class="container">
+            <h1>Micro-Task Platform</h1>
+            <p>কাজ করুন, ভেরিফাই করুন এবং টাকা ইনকাম করুন!</p>
+        </div>
     </header>
 
-    <!-- নেভিগেশন মেনু -->
+    <div class="container">
+        <div class="navbar">
+            <a href="#home" class="active"><i class="fas fa-home"></i>Home</a>
+            <a href="#earning"><i class="fas fa-money-bill-wave"></i>Earning</a>
+            <a href="#promote"><i class="fas fa-rocket"></i>Promote</a>
+            <a href="#deposit"><i class="fas fa-credit-card"></i>Deposit</a>
+            <a href="#withdraw"><i class="fas fa-hand-holding-usd"></i>Withdraw</a>
+            <a href="#profile"><i class="fas fa-user"></i>Profile</a>
+        </div>
+
+        <div class="balance-card">
+            <i class="fas fa-coins"></i>Current Balance: ৳১৫০.০০ | <i class="fas fa-users"></i>Referral Bonus: ৳২.০০/Invite
+        </div>
+
+        <div class="slider-container">
+            <div class="slider">
+                <div class="slide slide-1">
+                    <i class="fas fa-bullhorn" style="font-size: 30px; margin-bottom: 15px;"></i><br>
+                    উইথড্রল আপডেট: বিকাশ এবং নগদে পেমেন্ট চালু!
+                </div>
+                <div class="slide slide-2">
+                    <i class="fas fa-gift" style="font-size: 30px; margin-bottom: 15px;"></i><br>
+                    নতুন অফার: ৫টি টাস্ক কমপ্লিট করলে বোনাস!
+                </div>
+                <div class="slide slide-3">
+                    <i class="fas fa-user-plus" style="font-size: 30px; margin-bottom: 15px;"></i><br>
+                    বন্ধুকে রেফার করুন এবং আরও আয় করুন!
+                </div>
+            </div>
+            <div class="slider-indicators">
+                <div class="indicator active"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+            </div>
+        </div>
+
+        <h2 id="earning" style="color: #2c3e50; font-size: 22px; font-weight: 700; margin-bottom: 20px;">Today's Available Tasks</h2>
+        
+        <div class="task-grid">
+            <div class="task-card">
+                <div class="icon-area"><i class="fab fa-youtube"></i></div>
+                <h3>Subscribe YouTube Channel</h3>
+                <p class="reward">৳৫.০০ <small>Reward</small></p>
+                <p class="condition">শর্ত: জিমেইল দিয়ে লগইন করে সাবস্ক্রাইব করুন।</p>
+                <button class="btn-verify" onclick="verifyTask('youtube')">Login & Verify</button>
+            </div>
+
+            <div class="task-card">
+                <div class="icon-area" style="color: #3498db;"><i class="fab fa-telegram"></i></div>
+                <h3>Join Telegram Group</h3>
+                <p class="reward">৳৩.০০ <small>Reward</small></p>
+                <p class="condition">শর্ত: টেলিগ্রাম আইডিতে জয়েন করে ভেরিফাই করুন।</p>
+                <button class="btn-verify" onclick="verifyTask('telegram')">Join & Verify</button>
+            </div>
+
+            <div class="task-card">
+                <div class="icon-area" style="color: #2ecc71;"><i class="fas fa-tasks"></i></div>
+                <h3>Manual Task (Apply)</h3>
+                <p class="reward">৳১০.০০ <small>Reward</small></p>
+                <p class="condition">শর্ত: ওয়েবসাইট ভিজিট করে স্ক্রিনশট আপলোড করুন।</p>
+                <button class="btn-verify" onclick="verifyTask('custom')">Apply Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // স্লাইডার স্ক্রিপ্ট
+        const slider = document.querySelector('.slider');
+        const indicators = document.querySelectorAll('.indicator');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slider.style.transform = `translateX(-${index * 100}%)`;
+            indicators.forEach((indicator, i) => {
+                indicator.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % indicators.length;
+            showSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, 5000); // প্রতি ৫ সেকেন্ডে স্লাইড চেঞ্জ
+
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => showSlide(index));
+        });
+
+        function verifyTask(type) {
+            if(type === 'youtube') {
+                alert("Google OAuth Login Page এ নিয়ে যাওয়া হবে...");
+            } else if(type === 'telegram') {
+                alert("Telegram Bot Verification চেক করা হচ্ছে...");
+            } else {
+                alert("স্ক্রিনশট আপলোড করার ফর্ম ওপেন হবে...");
+            }
+        }
+    </script>
+
+</body>
+</html>    <!-- নেভিগেশন মেনু -->
     <div class="navbar">
         <a href="#home">Home</a>
         <a href="#earning">Earning (Tasks)</a>
